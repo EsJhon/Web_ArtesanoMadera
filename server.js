@@ -37,14 +37,14 @@ app.use('/api/reportes', reporteRoutes);
 const angularDistPath = path.join(__dirname, 'dist/WEB_ArtesanoMadera');
 app.use(express.static(angularDistPath));
 
-// CORRECCIÓN: Ruta catch-all mejorada
-// Primero manejar rutas API no encontradas
-app.all('/api/*', (req, res) => {
+// CORRECCIÓN: Usar expresiones regulares para evitar problemas con path-to-regexp
+// Ruta para APIs no encontradas (cualquier ruta que empiece con /api, con o sin más path)
+app.all(/^\/api(\/.*)?/, (req, res) => {
   res.status(404).json({ status: 'error', message: 'Ruta API no encontrada' });
 });
 
-// Luego servir Angular para todas las demás rutas
-app.get('/*', (req, res) => {
+// Ruta catch-all para Angular (cualquier ruta que no sea API y no haya sido atendida por los archivos estáticos)
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(angularDistPath, 'index.html'));
 });
 
