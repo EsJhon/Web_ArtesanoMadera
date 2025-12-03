@@ -88,8 +88,8 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'dist/WEB_ArtesanoMadera')));
 
 // Cualquier otra ruta envía index.html (para Angular routing)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/WEB_ArtesanoMadera/index.html'));
+app.get('/:path(*)', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/web-artesano-madera/index.html'));
 });
 
 // ================= INICIAR SERVIDOR =================
