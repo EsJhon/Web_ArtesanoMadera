@@ -4,23 +4,10 @@
   "type": "module",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",  
+    "start": "node server.js",
     "build": "ng build --configuration production",
-    "build:dev": "ng build",   
-    "heroku-postbuild": "ng build"   
-  },
-  
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": "*.html",
-        "options": {
-          "parser": "angular"
-        }
-      }
-    ]
+    "build:dev": "ng build",
+    "postinstall": "ng build --configuration production"
   },
   "private": true,
   "dependencies": {
@@ -44,7 +31,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.2.1",
+    "@angular-devkit/build-angular": "^20.3.13",
     "@angular/cli": "^20.3.7",
     "@angular/compiler-cli": "^20.2.0",
     "@types/jasmine": "~5.1.0",
@@ -55,18 +42,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.2"
-  },
-  "description": "This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.1.",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EsJhon/Proyecto_Web.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/EsJhon/Proyecto_Web/issues"
-  },
-  "homepage": "https://github.com/EsJhon/Proyecto_Web#readme"
+  }
 }

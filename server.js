@@ -20,30 +20,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // ================= MULTER PARA IMÁGENES =================
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname),
 });
 const upload = multer({ storage });
 
 // ================= API LOGIN =================
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password)
-    return res.status(400).json({ status: 'error', message: 'Faltan datos' });
+  if (!email || !password) return res.status(400).json({ status: 'error', message: 'Faltan datos' });
 
   try {
     const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
-    if (rows.length === 0)
-      return res.status(400).json({ status: 'error', message: 'Usuario no encontrado' });
+    if (rows.length === 0) return res.status(400).json({ status: 'error', message: 'Usuario no encontrado' });
 
     const user = rows[0];
-    // Solo admin (si quieres permitir todos, comenta la línea siguiente)
-    if (user.id !== 8)
-      return res.status(403).json({ status: 'error', message: 'Solo admin puede ingresar' });
+    // Solo admin
+    if (user.id !== 8) return res.status(403).json({ status: 'error', message: 'Solo admin puede ingresar' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ status: 'error', message: 'Contraseña incorrecta' });
@@ -91,10 +84,12 @@ app.post('/api/productos', upload.single('imagen'), async (req, res) => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.static(path.join(__dirname, 'dist/web-artesano-madera')));
+// Ajustar la ruta según tu carpeta dist (mayúsculas/minúsculas exactas)
+app.use(express.static(path.join(__dirname, 'dist/WEB_ArtesanoMadera')));
 
+// Cualquier otra ruta envía index.html (para Angular routing)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/web-artesano-madera/index.html'));
+  res.sendFile(path.join(__dirname, 'dist/WEB_ArtesanoMadera/index.html'));
 });
 
 // ================= INICIAR SERVIDOR =================
