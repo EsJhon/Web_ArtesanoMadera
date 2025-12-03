@@ -37,11 +37,14 @@ app.use('/api/reportes', reporteRoutes);
 const angularDistPath = path.join(__dirname, 'dist/WEB_ArtesanoMadera');
 app.use(express.static(angularDistPath));
 
-// Catch-all SPA (Angular routing)
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({ status: 'error', message: 'Ruta API no encontrada' });
-  }
+// CORRECCIÓN: Ruta catch-all mejorada
+// Primero manejar rutas API no encontradas
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ status: 'error', message: 'Ruta API no encontrada' });
+});
+
+// Luego servir Angular para todas las demás rutas
+app.get('/*', (req, res) => {
   res.sendFile(path.join(angularDistPath, 'index.html'));
 });
 
