@@ -6,38 +6,36 @@
   padding: 30px 50px;
 }
 
-/* Barra de progreso */
-.progress-bar {
+/* PASOS DEL CARRO */
+.cart-header {
+  width: 100%;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background-color: #1a1a1a;
-  border-radius: 25px;
+  border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  padding: 0.5rem 0;
 }
 
-.step {
+.cart-step {
   flex: 1;
   text-align: center;
-  padding: 12px 0;
-  font-weight: bold;
-  color: #fff;
-  background-color: #333;
-  border-right: 2px solid #000;
+  padding: 1rem;
+  background: #2b2b2b;
+  font-weight: 600;
+  color: #bbb;
+  transition: all 0.3s;
 }
 
-.step.completed {
-  background-color: #a5cf6b;
-  color: #000;
-}
-
-.step.active {
-  background-color: #7ab64b;
-  color: #fff;
-}
-
-.step:last-child {
-  border-right: none;
+.cart-step.active {
+  background-color: #cba76b;
+  color: #111;
+  box-shadow: 0 0 10px rgba(203, 166, 107, 0.5);
+  transform: scale(1.05);
 }
 
 /* Cuerpo principal */

@@ -1,84 +1,96 @@
 <app-header></app-header>
 
 <div class="producto-detalle-page" *ngIf="product">
-  <header class="topbar">
-    <div class="logo">🪵 Madera</div>
-    <ul class="menu">
-      <li><a routerLink="/">Inicio</a></li>
-      <li class="active"><a routerLink="/productos">Productos</a></li>
-      <li>Nosotros</li>
-      <li>Contacto</li>
-      <li>Carrito 🛒</li>
-    </ul>
-    <div class="search">
-      <input type="text" placeholder="Explore sus productos" />
-    </div>
-  </header>
-
   <main class="producto-detalle-container">
-    <nav class="breadcrumb">
-      Inicio / Productos / {{ product.nombre }}
-    </nav>
-
+    
+    <!-- 🟤 Detalle del producto -->
     <section class="producto-detalle">
+      
+      <!-- Galería de imágenes -->
       <div class="galeria">
         <div class="miniaturas">
-          <img [src]="product.imagen" alt="Miniatura" />
-          <img [src]="product.imagen" alt="Miniatura" />
-          <img [src]="product.imagen" alt="Miniatura" />
+          <img *ngFor="let img of [product.imagen, product.imagen, product.imagen]" 
+               [src]="'http://localhost:3000/uploads/productos/' + img" 
+               [alt]="product.nombre + ' miniatura'" />
         </div>
         <div class="imagen-principal">
-          <img [src]="product.imagen" [alt]="product.nombre" />
+          <img [src]="'http://localhost:3000/uploads/productos/' + product.imagen" [alt]="product.nombre" />
         </div>
       </div>
 
+      <!-- Información del producto -->
       <div class="info-producto">
         <h2>{{ product.nombre }}</h2>
-        <div class="valoracion">
-          ★★★★★ <span>{{ product.reviews }} Reviews</span>
-        </div>
-        <div class="precio">S/.{{ product.precio }}</div>
-        <p class="categoria">{{ product.categoria }}</p>
-
-        <div class="campo">
-          <label>Color:</label>
-          <select>
-            <option *ngFor="let color of product.color">{{ color }}</option>
-          </select>
-        </div>
 
         <div class="stock">
           Disponibilidad: <span>{{ product.stock }} productos en stock</span>
         </div>
 
         <div class="cantidad">
-          <button>-</button>
-          <span>1</span>
-          <button>+</button>
+          <button (click)="disminuirCantidad()">-</button>
+          <span>{{ cantidad }}</span>
+          <button (click)="aumentarCantidad()">+</button>
         </div>
 
-        <button class="btn agregar">Agregar al carrito 🛒</button>
+        <!-- <button class="btn agregar">Comprar</button>  -->
+        <button class="btn agregar" (click)="agregarAlCarrito()">Agregar al carrito 🛒</button>
       </div>
+
     </section>
 
+    <!-- 🟤 Tabs de detalles -->
     <section class="detalles">
       <div class="tabs">
-        <button class="active">Información del producto</button>
-        <button>Delivery & Returns</button>
-        <button>Reviews</button>
+        <label class="active">Información del producto</label>
       </div>
-
       <div class="contenido">
         <p>{{ product.descripcion }}</p>
       </div>
     </section>
-  </main>
 
-  <footer class="footer">
-    <p>
-      Somos una carpintería especializada en crear muebles personalizados y de alta calidad.
-    </p>
-  </footer>
+    <!-- 🟤 También te puede gustar -->
+    <section class="tambien-gustar" *ngIf="productosRelacionados.length > 0">
+      <h3>También te puede gustar</h3>
+
+      <div class="carousel-container">
+        <button class="nav left" (click)="scrollLeft()">◀</button>
+
+        <div class="carousel" #carousel>
+          <div 
+            class="item" 
+            *ngFor="let item of productosRelacionados" 
+            [routerLink]="['/productdet', item.id]"
+          >
+            <img [src]="'http://localhost:3000/uploads/productos/' + item.imagen" [alt]="item.nombre">
+            <h4>{{ item.nombre }}</h4>
+            <p class="precio">S/.{{ item.precio }}</p>
+            <p class="stock">Stock: {{ item.stock }} unidades</p>
+          </div>
+        </div>
+
+        <button class="nav right" (click)="scrollRight()">▶</button>
+      </div>
+    </section>
+
+    <!-- 🟤 Últimos productos vistos -->
+    <section class="ultimos-vistos" *ngIf="productosVistos.length > 0">
+      <h3>Últimos productos vistos</h3>
+      <div class="grid-vistos">
+        <div 
+          class="producto-visto" 
+          *ngFor="let visto of productosVistos" 
+          [routerLink]="['/productdet', visto.id]"
+        >
+          <img [src]="'http://localhost:3000/uploads/productos/' + visto.imagen" [alt]="visto.nombre">
+          <h4>{{ visto.nombre }}</h4>
+          <p class="precio">S/.{{ visto.precio }}</p>
+          <p class="stock">Stock: {{ visto.stock }} unidades</p>
+          <p class="descripcion">{{ visto.descripcion }}</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <app-footer></app-footer>

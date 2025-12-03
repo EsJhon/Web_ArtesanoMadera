@@ -1,1 +1,95 @@
-<p>register works!</p>
+<!-- Header -->
+<app-header></app-header>
+
+<div class="login-container">
+  <div class="login-image">
+    <img [src]="currentImage" alt="Caja animada" #cajaImage>
+  </div>
+  
+  <form class="login-form" (ngSubmit)="onRegister()">
+    <!-- Campos del formulario -->
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input 
+        type="text" 
+        id="nombre" 
+        [(ngModel)]="nombre" 
+        name="nombre"
+        placeholder="Tu nombre completo" 
+        autocomplete="off"
+        (focus)="onInputFocus('nombre')"
+        (blur)="onInputBlur()">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        [(ngModel)]="email" 
+        name="email"
+        placeholder="ejemplo@gmail.com" 
+        autocomplete="off"
+        (focus)="onInputFocus('email')"
+        (blur)="onInputBlur()">
+    </div>
+
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input 
+        type="text" 
+        id="telefono" 
+        [(ngModel)]="telefono" 
+        name="telefono"
+        placeholder="999 999 999" 
+        autocomplete="off"
+        (focus)="onInputFocus('telefono')"
+        (blur)="onInputBlur()">
+    </div>
+
+    <div class="form-group">
+      <label for="direccion">Dirección</label>
+      <input 
+        type="text" 
+        id="direccion" 
+        [(ngModel)]="direccion" 
+        name="direccion"
+        placeholder="Tu dirección" 
+        autocomplete="off"
+        (focus)="onInputFocus('direccion')"
+        (blur)="onInputBlur()">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input 
+        type="password" 
+        id="password" 
+        [(ngModel)]="password" 
+        name="password"
+        placeholder="***"
+        (focus)="onInputFocus('password')"
+        (blur)="onInputBlur()">
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirmar Contraseña</label>
+      <input 
+        type="password" 
+        id="confirmPassword" 
+        [(ngModel)]="confirmPassword" 
+        name="confirmPassword"
+        placeholder="***"
+        (focus)="onInputFocus('confirmPassword')"
+        (blur)="onInputBlur()">
+    </div>
+
+    <!-- Botón de registro -->
+    <button type="submit" class="login-btn">Registrar</button>
+
+    <!-- Texto "Recordé mi contraseña" -->
+    <p class="forgot-password" (click)="onForgotPassword()">Recordé mi cuenta</p>
+  </form>
+</div>
+<!-- Footer -->
+<app-footer></app-footer>

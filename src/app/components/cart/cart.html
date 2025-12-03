@@ -1,13 +1,19 @@
 <!-- Header -->
 <app-header></app-header>
-<div class="cart-container">
+
+<div class="container">
+  
+  <div class="cart-container">
+
+    <!-- Pasos -->
     <div class="cart-header">
       <div class="cart-step active">Mi Carrito</div>
       <div class="cart-step">Delivery</div>
       <div class="cart-step">Pago</div>
       <div class="cart-step">Confirmación</div>
     </div>
-  
+
+    <!-- Tabla de productos -->
     <div class="cart-table">
       <div class="cart-row header">
         <div>Producto</div>
@@ -15,30 +21,33 @@
         <div>Cantidad</div>
         <div>Precio Total</div>
       </div>
-  
-      <div class="cart-row">
+
+      <div class="cart-row" *ngFor="let producto of carrito">
         <div class="product-info">
-          <img src="assets/images/productos/producto_01.jpg" alt="Mesa de Comedor" />
+          <img [src]="imagenUrl(producto)" [alt]="producto.nombre" style="width: 80px; height: 80px; object-fit: cover;" />
           <div>
-            <h3>Mesa de Comedor</h3>
-            <select>
-              <option>Sub Categorías</option>
-            </select>
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.subcategoria }}</p>
           </div>
         </div>
-  
-        <div class="price">S/.147.51</div>
-  
-        <div class="quantity">
-          <button>-</button>
-          <span>1</span>
-          <button>+</button>
+
+        <div class="price">S/.{{ producto.precio.toFixed(2) }}</div>
+
+      <div class="quantity">
+          <button (click)="disminuirCantidad(producto)" [disabled]="producto.cantidad <= 1">-</button>
+          <span>{{ producto.cantidad }}</span>
+          <button (click)="aumentarCantidad(producto)" [disabled]="producto.cantidad >= producto.stock">+</button>
+      </div>
+
+        <div class="total-price">S/.{{ (producto.precio * producto.cantidad).toFixed(2) }}</div>
+
+        <div class="actions">
+          <button (click)="eliminarProducto(producto)" class="btn_host">Eliminar</button>
         </div>
-  
-        <div class="total-price">S/.147.51</div>
       </div>
     </div>
-  
+
+    <!-- Resumen -->
     <div class="cart-summary">
       <div class="summary-box">
         <h3>Envío</h3>
@@ -51,26 +60,29 @@
         </div>
         <button>Actualizar</button>
       </div>
-  
+
       <div class="summary-box">
         <h3>Código de cupón</h3>
-        <p>
-          Puedes aplicar cupones si los tienes que te puedan dar descuento en el producto,
-          puedes agregar el código.
-        </p>
-        <input type="text" placeholder="Código promocional" />
-        <button>Aplicar</button>
+        <p>Ingresa tu cupón para descuento en el carrito.</p>
+        <input type="text" placeholder="Código promocional" [(ngModel)]="codigoCupon" />
+        <button (click)="aplicarCupon()">Aplicar</button>
       </div>
-  
+
       <div class="summary-box total">
         <h3>Total del carrito</h3>
-        <p>Subtotal del carrito: <span>S/.147.51</span></p>
+        <p>Subtotal: <span>S/.{{ subtotal.toFixed(2) }}</span></p>
         <p>Envío: <span class="free">Free</span></p>
-        <p>Descuento: <span class="discount">-S/.7.51</span></p>
-        <p class="final">Total del carrito: <span>S/.140</span></p>
+        <p>Descuento: <span class="discount">-S/.{{ descuento.toFixed(2) }}</span></p>
+        <p class="final">Total: <span>S/.{{ total.toFixed(2) }}</span></p>
         <button>Verificar</button>
       </div>
     </div>
+
+    <!-- Botón siguiente -->
+    <div class="next-step" style="text-align: right; margin-top: 1rem;">
+      <button class="btnprimary_" routerLink="/delivery">Siguiente</button>
+    </div>
   </div>
-  <!-- Footer -->
+</div>
+<!-- Footer -->
 <app-footer></app-footer>

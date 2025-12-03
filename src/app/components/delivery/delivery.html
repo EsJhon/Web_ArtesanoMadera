@@ -1,45 +1,45 @@
+<!-- Header -->
+<app-header></app-header>
+
 <div class="delivery-container">
-  <!-- Barra de progreso igual que el carrito -->
+
+  <!-- 🔵 Pasos -->
   <div class="cart-header">
     <div class="cart-step active">Mi Carrito</div>
-    <div class="cart-step current">Delivery</div>
+    <div class="cart-step active">Delivery</div>
     <div class="cart-step">Pago</div>
     <div class="cart-step">Confirmación</div>
   </div>
 
   <div class="delivery-content">
-    <!-- formulario y resumen igual que antes -->
-  </div>
-</div>
 
-<div class="delivery-container">
-
-  <div class="delivery-content">
-    <!-- 🧾 Información de envío -->
+    <!-- 🧾 Información de Envío -->
     <div class="delivery-form">
+
       <h2>Información de envío</h2>
 
       <label>Título de la dirección</label>
-      <input type="text" placeholder="Address Title" />
+      <input type="text" placeholder="Dirección" [(ngModel)]="envio.titulo" />
 
       <label>Nombre Completo</label>
       <div class="input-row">
-        <input type="text" placeholder="First Name" />
-        <input type="text" placeholder="Middle Name" />
-        <input type="text" placeholder="Last Name" />
+        <input type="text" placeholder="Primer Nombre" [(ngModel)]="envio.nombre" />
+        <input type="text" placeholder="Segundo Nombre" [(ngModel)]="envio.segundoNombre" />
+        <input type="text" placeholder="Apellido" [(ngModel)]="envio.apellido" />
       </div>
 
       <label>Tu Dirección</label>
-      <input type="text" placeholder="Permanent Address" />
+      <input type="text" placeholder="Dirección permanente" [(ngModel)]="envio.direccion" />
 
       <div class="input-row">
         <div>
           <label>Código Zip</label>
-          <input type="text" placeholder="30531" />
+          <input type="text" placeholder="30531" [(ngModel)]="envio.zip" />
         </div>
+
         <div>
           <label>País</label>
-          <select>
+          <select [(ngModel)]="envio.pais">
             <option>Perú</option>
             <option>Chile</option>
             <option>Argentina</option>
@@ -50,7 +50,7 @@
       <div class="input-row">
         <div>
           <label>Ciudad</label>
-          <select>
+          <select [(ngModel)]="envio.ciudad">
             <option>Cusco</option>
             <option>Lima</option>
             <option>Arequipa</option>
@@ -61,46 +61,50 @@
       <div class="input-row">
         <div>
           <label>Número de Celular</label>
-          <input type="text" placeholder="+51 999 999 999" />
+          <input type="text" placeholder="+51 999 999 999" [(ngModel)]="envio.celular" />
         </div>
+
         <div>
           <label>Teléfono</label>
-          <input type="text" placeholder="(01) 999-9999" />
+          <input type="text" placeholder="(01) 999-9999" [(ngModel)]="envio.telefono" />
         </div>
       </div>
 
       <label>Tiempo de Entrega</label>
       <div class="radio-group">
-        <label><input type="radio" name="time" /> De 6am a 12pm</label>
-        <label><input type="radio" name="time" /> De 12pm a 4pm</label>
-        <label><input type="radio" name="time" /> De 4pm a 7pm</label>
+        <label><input type="radio" name="time" value="6-12" [(ngModel)]="envio.horario" /> De 6am a 12pm</label>
+        <label><input type="radio" name="time" value="12-4" [(ngModel)]="envio.horario" /> De 12pm a 4pm</label>
+        <label><input type="radio" name="time" value="4-7" [(ngModel)]="envio.horario" /> De 4pm a 7pm</label>
       </div>
 
-      <button class="back-btn">Volver al carrito</button>
+      <button class="back-btn" (click)="volverAlCarrito()">Volver al carrito</button>
     </div>
 
     <!-- 📦 Resumen -->
     <div class="delivery-summary">
       <h2>Resumen</h2>
-      <div class="summary-item">
-        <img src="assets/images/productos/producto_01.jpg" alt="Mesa de comedor" />
+
+      <!-- 🟢 PRODUCTOS REALES DEL CARRITO -->
+      <div class="summary-item" *ngFor="let item of carrito">
+        <img [src]="'http://localhost:3000/uploads/productos/' + item.imagen" [alt]="item.nombre" />
         <div class="details">
-          <h4>Mesa de Comedor</h4>
-          <p>Cantidad: 1</p>
-          <span class="price">S/.147.51</span>
+          <h4>{{ item.nombre }}</h4>
+          <p>Cantidad: {{ item.cantidad }}</p>
+          <span class="price">S/.{{ item.precio * item.cantidad | number:'1.2-2' }}</span>
         </div>
       </div>
 
       <hr />
 
       <div class="price-info">
-        <p>Subtotal: <span>S/.147.51</span></p>
-        <p>Envío: <span class="free">Free</span></p>
-        <p>Descuento: <span class="discount">- S/.7.51</span></p>
-        <p class="total">Total: <span>S/.140</span></p>
+        <p>Subtotal: <span>S/.{{ subtotal | number:'1.2-2' }}</span></p>
+        <p>Envío: <span class="free">Gratis</span></p>
+        <p>Descuento: <span class="discount">- S/.{{ descuento | number:'1.2-2' }}</span></p>
+        <p class="total">Total: <span>S/.{{ total | number:'1.2-2' }}</span></p>
       </div>
 
       <h3>Shipping</h3>
+
       <div class="shipping-options">
         <label>
           <input type="radio" name="shipping" checked />
@@ -115,7 +119,14 @@
         </label>
       </div>
 
-      <button class="verify-btn">Verificar ➜</button>
+      <!-- 👉 Ahora sí llama a la función -->
+      <button class="verify-btn" (click)="irAPayment()">Verificar ➜</button>
+
     </div>
+
   </div>
+
 </div>
+
+<!-- Footer -->
+<app-footer></app-footer>

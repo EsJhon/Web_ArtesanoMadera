@@ -1,52 +1,52 @@
-
-
-.cart-header, .progress-bar {
+/* PASOS DEL CARRO */
+.cart-header {
+  width: 100%;
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   background-color: #1a1a1a;
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
   padding: 0.5rem 0;
 }
 
-.cart-step, .step {
+.cart-step {
   flex: 1;
   text-align: center;
-  padding: 1rem 0;
-  background: #2b2b2b; /* Pendientes */
+  padding: 1rem;
+  background: #2b2b2b;
   font-weight: 600;
-  color: #bbb; /* Pendientes */
+  color: #bbb;
+  transition: all 0.3s;
 }
 
-/* Paso completado */
-.cart-step.active, .step.active {
-  background-color: red; /* Mi Carrito */
-  color: #fff;
+.cart-step.active {
+  background-color: #cba76b;
+  color: #111;
+  box-shadow: 0 0 10px rgba(203, 166, 107, 0.5);
+  transform: scale(1.05);
 }
 
-/* Paso actual según la página */
-.cart-step.current, .step.current {
-  /* Puedes cambiar el color según la página */
-  background-color: #FFD700; /* Delivery amarillo */
-  color: #000;
-}
-
-/* Paso siguiente (Pago) */
-.cart-step.next, .step.next {
-  background-color: #00ff7f; /* Verde */
-  color: #000;
-}
-
-
+/* CONTENEDOR GENERAL */
 .payment-container {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;   /* ⬅️ Para que los pasos estén arriba */
+  gap: 20px;
   background-color: #121212;
   color: #f2f2f2;
   padding: 30px 50px;
   min-height: 100vh;
   font-family: "Poppins", sans-serif;
+}
+
+/* Contenedor de las dos columnas */
+.payment-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
 }
 
 /* Sección izquierda */
@@ -79,12 +79,13 @@
   margin-bottom: 5px;
 }
 
+/* Inputs */
 .form-group input,
 .form-group select {
-  background: transparent;
+  background: #111;                 /* ⬅️ fondo negro real */
   border: 1px solid #444;
   border-radius: 6px;
-  color: #C9A66B;
+  color: #fff;                      /* ⬅️ texto blanco */
   padding: 10px;
 }
 
@@ -94,6 +95,13 @@
   border-color: #d1a233;
 }
 
+/* Opciones del select → negras */
+.form-group select option {
+  background-color: #111;  /* ⬅️ fondo negro */
+  color: #fff;             /* ⬅️ texto blanco */
+}
+
+/* Fila */
 .form-row {
   display: flex;
   gap: 10px;
@@ -207,10 +215,11 @@
   background-color: #e5bb4a;
 }
 
+/* RESPONSIVE */
 @media (max-width: 900px) {
-  .payment-container {
+
+  .payment-columns {
     flex-direction: column;
-    gap: 20px;
   }
 
   .payment-info,

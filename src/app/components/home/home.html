@@ -251,68 +251,26 @@
         <!-- Productos destacados -->
         <div class="productos-destacados">
             <h2>Productos Destacados</h2>
+
             <div class="grid-productos">
-                <div class="producto-card">
-                    <img src="assets/images/productos/producto_01.jpg" alt="Mesa de comedor">
-                    <div class="info-producto">
-                    <p><strong>Nombre:</strong> Mesa de Comedor</p>
-                    <p><strong>Precio:</strong> S/147.51</p>
-                    <p><strong>Descripción:</strong> Mesa de madera, diseño moderno, perfecta para tu comedor.</p>
-                    <button class="btn-comprar" (click)="irA('/productdet')">Comprar</button>
-                    </div>
-                </div>
+                <div class="producto-card" *ngFor="let producto of productos | slice:0:6">
+                    <img
+                        [src]="'http://localhost:3000/uploads/productos/' + producto.imagen"
+                        [alt]="producto.nombre"
+                    />
 
-                <div class="producto-card">
-                    <img src="assets/images/productos/producto_01.jpg" alt="Cámara de seguridad">
                     <div class="info-producto">
-                    <p><strong>Nombre:</strong> DS-2CD2026G2-IU/SL</p>
-                    <p><strong>Precio:</strong> S/314.00</p>
-                    <p><strong>Descripción:</strong> 2MP, AcuSense, luz estroboscópica y micrófono incorporado, IP67.</p>
-                    <button class="btn-comprar" (click)="irA('/productdet')">Comprar</button>
-                    </div>
-                </div>
-
-                <div class="producto-card">
-                    <img src="assets/images/productos/producto_01.jpg" alt="Cámara de seguridad">
-                    <div class="info-producto">
-                    <p><strong>Nombre:</strong> DS-2CD2483G2-I</p>
-                    <p><strong>Precio:</strong> S/145.34</p>
-                    <p><strong>Descripción:</strong> 8MP, diseño compacto, micrófono incorporado, lente fija 2.8mm.</p>
-                    <button class="btn-comprar" (click)="irA('/productdet')">Comprar</button>
-                    </div>
-                </div>
-
-                <div class="producto-card">
-                    <img src="assets/images/productos/producto_01.jpg" alt="Cámara panorámica">
-                    <div class="info-producto">
-                    <p><strong>Nombre:</strong> DS-2CD2366G2P-ISU</p>
-                    <p><strong>Precio:</strong> S/345.35</p>
-                    <p><strong>Descripción:</strong> 6MP Panorámica, micrófono y sirena incorporados, IP67.</p>
-                    <button class="btn-comprar" (click)="irA('/productdet')">Comprar</button>
-                    </div>
-                </div>
-
-                <div class="producto-card">
-                    <img src="assets/images/productos/producto_01.jpg" alt="Cámara panorámica">
-                    <div class="info-producto">
-                    <p><strong>Nombre:</strong> DS-2CD2366G2P-ISU</p>
-                    <p><strong>Precio:</strong> S/345.35</p>
-                    <p><strong>Descripción:</strong> 6MP Panorámica, micrófono y sirena incorporados, IP67.</p>
-                    <button class="btn-comprar" (click)="irA('/productdet')">Comprar</button>
-                    </div>
-                </div>
-                <div class="producto-card">
-                    <img src="assets/images/productos/producto_01.jpg" alt="Cámara panorámica">
-                    <div class="info-producto">
-                    <p><strong>Nombre:</strong> DS-2CD2366G2P-ISU</p>
-                    <p><strong>Precio:</strong> S/345.35</p>
-                    <p><strong>Descripción:</strong> 6MP Panorámica, micrófono y sirena incorporados, IP67.</p>
-                    <button class="btn-comprar" (click)="irA('/productdet')">Comprar</button>
-
+                        <p><strong>Nombre:</strong> {{ producto.nombre }}</p>
+                        <p><strong>Precio:</strong> S/{{ producto.precio }}</p>
+                        <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+                        <button class="btn-comprar" (click)="irADetalle(producto.id)">
+                            Ver Producto
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Contacto -->
         <div class="main-contenido">

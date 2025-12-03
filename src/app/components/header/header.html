@@ -9,9 +9,20 @@
     <div class="nav-items">
       <a href="/" routerLinkActive="active" (click)="irA('/home')">Inicio</a>
       <a href="/products" routerLinkActive="active" (click)="irA('/products')">Productos</a>
-      <a href="javascript:void(0)" (click)="irA('/', 'contacto')" routerLinkActive="active">Contacto</a>
-      <a href="/cart" routerLinkActive="active" (click)="irA('/cart')">Carrito</a>
-      <a href="/login" routerLinkActive="active" class="bot" (click)="irA('/login')">Iniciar Sesión</a>
+      <a href="javascript:void(0)" (click)="irAContacto()" routerLinkActive="active">Contacto</a>
+      <a href="/about" (click)="irA('/about')" routerLinkActive="active">Nosotros</a>
+      <a href="/cart" routerLinkActive="active" (click)="irA('/cart')">Carrito 🛒</a>
+
+      <!-- Mostrar nombre si está logueado -->
+      <ng-container *ngIf="nombreUsuario; else loginLink">
+        <span class="user-name">Hola, {{ nombreUsuario }}</span>
+        <a href="javascript:void(0)" class="bot" (click)="cerrarSesion()">Cerrar Sesión 🚪</a>
+      </ng-container>
+
+      <!-- Link de login si no hay usuario -->
+      <ng-template #loginLink>
+        <a href="/login" routerLinkActive="active" class="bot" (click)="irA('/login')">Iniciar Sesión 🔑</a>
+      </ng-template>
     </div>
   </nav>
 
@@ -22,8 +33,8 @@
     </div>
 
     <div class="botones">
-        <button class="bot01" (click)="irA('/cart')">Comprar</button>
-        <button class="bot01" (click)="irA('/products')">Ver Productos</button>
+      <button class="bot01" (click)="irA('/cart')">Comprar</button>
+      <button class="bot01" (click)="irA('/products')">Ver Productos</button>
     </div>
   </main>
 </header>

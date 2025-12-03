@@ -1,53 +1,110 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Header } from '../header/header';
 import { Footer } from '../footer/footer';
+import { ProductoService } from '../../services/producto.service';
+import { Producto } from '../../services/producto';
+import { CarritoService } from '../../services/carrito.service';
 
 @Component({
-  selector: 'app-product-detail',
+  selector: 'app-productdet',
   standalone: true,
-  imports: [CommonModule, Header, Footer],
+  imports: [CommonModule, RouterModule, Header, Footer], // ✅ Se añadió RouterModule
   templateUrl: './productdet.html',
   styleUrls: ['./productdet.css']
 })
-export class ProductDetail {
-  productId: string | null = null;
-  product: any = null;
+export class ProductDetComponent implements OnInit {
+  product?: Producto;
+  productosRelacionados: Producto[] = [];
+  productosVistos: Producto[] = [];
+  cantidad: number = 1; // cantidad inicial
 
-  products = [
-    {
-      id: '1',
-      nombre: 'Mesa de Comedor',
-      precio: 147.51,
-      stock: 10,
-      color: ['Natural', 'Oscuro'],
-      categoria: 'Mesa',
-      descripcion: 'Mesa de madera de cedro natural, resistente y elegante.',
-      imagen: 'assets/images/productos/producto_01.jpg',
-      reviews: 7
-    },
-    {
-      id: '2',
-      nombre: 'Silla de Madera',
-      precio: 79.99,
-      stock: 25,
-      color: ['Natural', 'Nogal'],
-      categoria: 'Silla',
-      descripcion: 'Silla artesanal hecha de madera sólida.',
-      imagen: 'assets/img/silla.jpg',
-      reviews: 3
-    }
-  ];
 
-  constructor(private route: ActivatedRoute) {}
+  @ViewChild('carousel') carousel!: ElementRef;
+
+  constructor(
+    private route: ActivatedRoute,
+    private productoService: ProductoService,
+    private carritoService: CarritoService
+  ) {}
 
   ngOnInit(): void {
-    this.productId = this.route.snapshot.paramMap.get('id');
-    if (this.productId) {
-      this.product = this.products.find(p => p.id === this.productId);
-    } else {
-      this.product = this.products[0]; // Muestra un producto por defecto si no hay id
+    // Escucha cambios en el parámetro 'id' de la URL
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.cargarProducto(+id);
+        this.registrarProductoVisto(+id);
+      }
+    });
+  }
+
+  cargarProducto(id: number): void {
+    this.productoService.getProductos().subscribe(
+      (data: Producto[]) => {
+        this.product = data.find(p => p.id === id);
+        if (this.product) {
+          this.productosRelacionados = data
+            .filter(p => p.id !== id)
+            .slice(0, 6);
+        }
+      },
+      error => console.error('Error al cargar el producto:', error)
+    );
+  }
+
+  agregarAlCarrito(): void {
+    if (this.product) {
+      const productoCarrito = {
+        id: this.product.id,
+        nombre: this.product.nombre,
+        precio: Number(this.product.precio), // convertir string a number
+        stock: this.product.stock,
+        imagen: this.product.imagen,        // ej: "mesas/mesa.jpg"
+        cantidad: this.cantidad,
+        subcategoria: this.product.subcategoria || ''
+      };
+      this.carritoService.agregarProducto(productoCarrito, this.cantidad);
+      alert(`${this.cantidad} unidad(es) de ${this.product.nombre} agregadas al carrito 🛒`);
+      this.cantidad = 1;
     }
   }
+
+
+  registrarProductoVisto(id: number): void {
+    let vistos: number[] = JSON.parse(localStorage.getItem('vistos') || '[]');
+    if (!vistos.includes(id)) {
+      vistos.unshift(id);
+      if (vistos.length > 4) vistos = vistos.slice(0, 4);
+      localStorage.setItem('vistos', JSON.stringify(vistos));
+    }
+    this.productoService.getProductos().subscribe((data: Producto[]) => {
+      this.productosVistos = data.filter(p => vistos.includes(p.id));
+    });
+  }
+
+  scrollLeft(): void {
+    this.carousel.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
+  }
+
+  scrollRight(): void {
+    this.carousel.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
+  }
+
+  aumentarCantidad(): void {
+    if (this.product && this.cantidad < this.product.stock) {
+      this.cantidad++;
+    } else {
+      alert('No hay más stock disponible');
+    }
+  }
+
+  disminuirCantidad(): void {
+    if (this.cantidad > 1) {
+      this.cantidad--;
+    }
+  }
+
+
 }

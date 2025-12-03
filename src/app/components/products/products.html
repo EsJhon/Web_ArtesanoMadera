@@ -3,78 +3,99 @@
 <main>
   <div class="container">
 
+    <!-- 🟡 Sidebar de filtros -->
     <aside class="filters">
       <h3>Filtrar productos</h3>
 
+      <!-- 🔹 Filtro por categoría -->
       <section class="filtro-categorias">
         <h4>Categorías</h4>
-        <label><input type="radio" name="cat" /> Camas</label>
-        <label><input type="radio" name="cat" /> Estanterías</label>
-        <label><input type="radio" name="cat" /> Mesas</label>
-        <label><input type="radio" name="cat" /> Sillas</label>
+        <label *ngFor="let cat of categorias">
+          <input type="radio" name="cat" [value]="cat" [(ngModel)]="filtroCategoria" (change)="actualizarSubcategorias()" />
+          {{ cat }}
+        </label>
       </section>
 
-      <section class="filtro-subcat">
-        <h4>Sub Categorías</h4>
-        <div class="chips">
-          <span class="chip">diseño modular</span>
-          <span class="chip">HD</span>
-          <span class="chip">HXR</span>
+      <!-- 🔹 Filtro por subcategoría -->
+      <section class="filtro-subcat" *ngIf="subcategorias.length > 0">
+        <h4>Subcategorías</h4>
+        <label *ngFor="let sub of subcategorias">
+          <input type="radio" name="subcat" [value]="sub" [(ngModel)]="filtroSubcategoria" />
+          {{ sub }}
+        </label>
+      </section>
+
+      <!-- 🔹 Filtro por estado -->
+      <section class="filtro-estado">
+        <h4>Estado del producto</h4>
+        <div class="estado-buttons">
+          <button class="pill on-sale" 
+                  [ngClass]="{'active': filtroEstado==='En Oferta'}" 
+                  (click)="filtroEstado='En Oferta';">
+            En Oferta
+          </button>
+          <button class="pill available" 
+                  [ngClass]="{'active': filtroEstado==='Disponible'}" 
+                  (click)="filtroEstado='Disponible';">
+            Disponible
+          </button>
+          <button class="pill out" 
+                  [ngClass]="{'active': filtroEstado==='Agotado'}" 
+                  (click)="filtroEstado='Agotado';">
+            Agotado
+          </button>
         </div>
       </section>
 
-      <section class="filtro-estado">
-        <h4>Estado del producto</h4>
-        <button class="pill on-sale">On sale</button>
-        <button class="pill out">Out of Stock</button>
-        <div class="available">Available in Stock</div>
-      </section>
+      <!-- 🔹 Botones de filtros -->
+      <div class="filter-actions">
+        <button class="btnprimary_" (click)="aplicarFiltros()">Aplicar filtros</button>
+        <button class="btnprimary_" (click)="limpiarFiltros()">Limpiar filtros</button>
+      </div>
     </aside>
 
+    <!-- 🟢 Área de productos -->
     <section class="grid-area">
+
+      <!-- Controles superiores -->
       <div class="top-controls">
-        <div class="count">30 Products</div>
+        <div class="count">{{ productosFiltrados.length }} Productos</div>
         <div class="sort">
-          Sort by
-          <select>
-            <option>Highest to Lowest</option>
+          Ordenar por
+          <select [(ngModel)]="orden">
+            <option value="mayor">Precio: Mayor a menor</option>
+            <option value="menor">Precio: Menor a mayor</option>
+            <option value="nuevo">Más nuevos</option>
           </select>
         </div>
       </div>
 
+      <!-- Grid de productos -->
       <div class="cards">
-        <article class="card">
-          <figure class="thumb">
-            <img src="assets/images/productos/producto_01.jpg" alt="Cama" />
-          </figure>
-          <div class="card-body">
-            <h3 class="title">Cama 2 Plazas</h3>
-            <p class="desc">Cama de madera</p>
-            <div class="price">S/ <strong>800</strong></div>
-            <div class="actions">
-              <button class="btn primary">Comprar ahora</button>
-              <button class="btn ghost">Añadir al carrito</button>
-            </div>
-          </div>
-        </article>
+        <article class="card" *ngFor="let producto of productosPagina()">
+          <figure class="thumb" (click)="verDetalle(producto)" style="cursor: pointer;">
+          <img [src]="'http://localhost:3000/uploads/productos/' + producto.imagen" [alt]="producto.nombre" />
+        </figure>
 
-        <article class="card">
-          <figure class="thumb">
-            <img src="assets/images/productos/producto_01.jpg" alt="Estantería" />
-          </figure>
           <div class="card-body">
-            <h3 class="title">Estantería detallada</h3>
-            <p class="desc">Hecha de madera sólida</p>
-            <div class="price">S/ <strong>600</strong></div>
+            <h3 class="title">{{ producto.nombre }}</h3>
+            <p class="desc">{{ producto.descripcion }}</p>
+            <div class="price">S/ <strong>{{ producto.precio }}</strong></div>
+            <div class="stock">Stock: {{ producto.stock }} unidades</div>
             <div class="actions">
-              <button class="btn primary">Comprar ahora</button>
-              <button class="btn ghost">Añadir al carrito</button>
+              <!-- <button class="btn primary">Comprar ahora</button> -->
+              <button class="btn ghost" (click)="agregarAlCarrito(producto)">Añadir al carrito</button>
             </div>
           </div>
         </article>
       </div>
 
-      <nav class="pagination">&lt; 1 2 3 ... 30 &gt;</nav>
+      <!-- Paginación -->
+      <nav class="pagination">
+        <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">&lt;</button>
+        <button *ngFor="let p of paginas()" (click)="cambiarPagina(p)" [class.active]="p === paginaActual">{{ p }}</button>
+        <button (click)="cambiarPagina(paginas().length)" [disabled]="paginaActual === paginas().length">&gt;</button>
+      </nav>
     </section>
 
   </div>

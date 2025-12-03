@@ -1,10 +1,13 @@
+<!-- Header -->
+<app-header></app-header>
+
 <div class="confirmacion-container">
-  <!-- Barra de progreso -->
-  <div class="progress-bar">
-    <div class="step completed">Mi Carrito</div>
-    <div class="step completed">Delivery</div>
-    <div class="step completed">Pago</div>
-    <div class="step active">Confirmación</div>
+   <!-- 🔵 Pasos -->
+  <div class="cart-header">
+    <div class="cart-step active">Mi Carrito</div>
+    <div class="cart-step active">Delivery</div>
+    <div class="cart-step active">Pago</div>
+    <div class="cart-step active">Confirmación</div>
   </div>
 
   <div class="confirmacion-content">
@@ -23,31 +26,32 @@
         para obtener actualizaciones sobre el estado del pedido.
       </p>
 
-      <button class="btn-seguimiento">Seguimiento del pedido</button>
-      <button class="btn-volver">Back to Home Page</button>
-    </div>
+      <!-- <button class="btn-seguimiento">Seguimiento del pedido</button> -->
+      <!-- <button class="btn-volver">Back to Home Page</button> -->
+    </div> 
 
     <!-- Columna derecha -->
     <div class="confirmacion-summary">
       <h2>Resumen</h2>
 
-      <div class="summary-item">
-        <img src="assets/images/productos/producto_01.jpg" alt="Mesa de comedor" />
+      <div class="summary-item" *ngFor="let item of carrito">
+        <img [src]="'http://localhost:3000/uploads/productos/' + item.imagen" [alt]="item.nombre" />
         <div class="summary-details">
-          <p class="item-name">Mesa de comedor</p>
-          <p class="item-category">Sub Categoría</p>
-          <p class="item-price">Cantidad: 1 — <span>S/.147.51</span></p>
+          <p class="item-name">{{ item.nombre }}</p>
+          <p class="item-price">Cantidad: {{ item.cantidad }} —
+            <span>S/.{{ item.precio * item.cantidad | number:'1.2-2' }}</span>
+          </p>
         </div>
       </div>
 
       <hr />
 
       <div class="price-breakdown">
-        <p>Subtotal: <span>S/.147.51</span></p>
+        <p>Subtotal: <span>S/.{{ subtotal | number:'1.2-2' }}</span></p>
         <p>Envío: <span class="free">Gratis</span></p>
-        <p>Descuento: <span class="discount">- S/.7.51</span></p>
+        <p>Descuento: <span class="discount">- S/.{{ descuento | number:'1.2-2' }}</span></p>
         <hr />
-        <p class="total">Total: <span>S/.140</span></p>
+        <p class="total">Total: <span>S/.{{ total | number:'1.2-2' }}</span></p>
       </div>
 
       <div class="shipping-info">
@@ -62,8 +66,10 @@
           <img src="assets/images/icons/icono_mastercard.webp" alt="MasterCard" />
           <span>MasterCard</span>
         </div>
-        <p class="total-pago">Total Payment: <span>S/.140</span></p>
+        <!-- <p class="total-pago">Total Payment: <span>S/.140</span></p> -->
       </div>
     </div>
   </div>
 </div>
+<!-- Footer -->
+<app-footer></app-footer>

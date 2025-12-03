@@ -1,3 +1,6 @@
+<!-- Header -->
+<app-header></app-header>
+
 <div class="login-container">
   <div class="login-image">
     <img [src]="currentImage" alt="Caja animada" #cajaImage>
@@ -31,5 +34,12 @@
     </div>
 
     <button type="submit" class="login-btn">Login</button>
+
+    <!-- Texto para registro -->
+    <p class="register-text" (click)="onGoToRegister()">
+      ¿No tienes cuenta? Crear o Registrarse
+    </p>
   </form>
 </div>
+<!-- Footer -->
+<app-footer></app-footer>

@@ -2,104 +2,137 @@
 <app-header></app-header>
 
 <div class="payment-container">
-  <!-- Sección izquierda: Información de pago -->
-  <div class="payment-info">
-    <h2>Información de pago</h2>
-    <hr />
 
-    <form>
-      <div class="form-group">
-        <label>Nombre del titular de la tarjeta</label>
-        <input type="text" placeholder="Tu Nombre" />
-      </div>
-
-      <div class="form-group">
-        <label>Número de tarjeta</label>
-        <input type="text" placeholder="Número de tarjeta" maxlength="16" />
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Mes de vencimiento</label>
-          <select>
-            <option>Mes</option>
-            <option>Enero</option>
-            <option>Febrero</option>
-            <option>Marzo</option>
-            <option>Abril</option>
-            <option>Mayo</option>
-            <option>Junio</option>
-            <option>Julio</option>
-            <option>Agosto</option>
-            <option>Setiembre</option>
-            <option>Octubre</option>
-            <option>Noviembre</option>
-            <option>Diciembre</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Año</label>
-          <select>
-            <option>Año</option>
-            <option>2025</option>
-            <option>2026</option>
-            <option>2027</option>
-            <option>2028</option>
-            <option>2029</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>CVV</label>
-        <input type="password" placeholder="CVV" maxlength="4" />
-      </div>
-
-      <div class="form-group">
-        <label>Otras opciones de pago</label>
-        <select>
-          <option>Seleccionar método</option>
-          <option>Transferencia bancaria</option>
-          <option>PayPal</option>
-          <option>Yape / Plin</option>
-        </select>
-      </div>
-
-      <button type="button" class="btn-volver">Volver a Direcciones</button>
-    </form>
+  <!-- 🔵 Pasos -->
+  <div class="cart-header">
+    <div class="cart-step active">Mi Carrito</div>
+    <div class="cart-step active">Delivery</div>
+    <div class="cart-step active">Pago</div>
+    <div class="cart-step">Confirmación</div>
   </div>
 
-  <!-- Sección derecha: Resumen -->
-  <div class="payment-summary">
-    <h2>Resumen</h2>
-    <div class="summary-item">
-      <img src="assets/images/productos/producto_01.jpg" alt="Mesa de comedor" />
-      <div class="summary-details">
-        <p class="item-name">Mesa de Comedor</p>
-        <p class="item-category">Sub Categoría</p>
-        <p class="item-price">Cantidad: 1 — <span>S/.147.51</span></p>
-      </div>
-    </div>
+  <!-- 🔶 CONTENEDOR DE LAS DOS COLUMNAS -->
+  <div class="payment-columns">
 
-    <hr />
-
-    <div class="price-breakdown">
-      <p>Subtotal: <span>S/.147.51</span></p>
-      <p>Envío: <span class="free">Gratis</span></p>
-      <p>Descuento: <span class="discount">- S/.7.51</span></p>
+    <!-- Sección izquierda: Información de pago -->
+    <div class="payment-info">
+      <h2>Información de pago</h2>
       <hr />
-      <p class="total">Total: <span>S/.140</span></p>
+
+      <!-- Mostrar datos del envío -->
+      <div class="delivery-info-box">
+        <h3>Datos de Envío</h3>
+        <p><strong>Nombre:</strong> {{ envio.nombre }} {{ envio.apellido }}</p>
+        <p><strong>Dirección:</strong> {{ envio.direccion }}</p>
+        <p><strong>Ciudad:</strong> {{ envio.ciudad }}</p>
+        <p><strong>País:</strong> {{ envio.pais }}</p>
+        <p><strong>Celular:</strong> {{ envio.celular }}</p>
+        <p><strong>Horario:</strong> {{ envio.horario }}</p>
+      </div>
+
+      <form>
+        <div class="form-group">
+          <label>Nombre del titular de la tarjeta</label>
+          <input type="text" placeholder="Tu Nombre" />
+        </div>
+
+        <div class="form-group">
+          <label>Número de tarjeta</label>
+          <input type="text" placeholder="Número de tarjeta" maxlength="16" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Mes de vencimiento</label>
+            <select>
+              <option>Mes</option>
+              <option>Enero</option>
+              <option>Febrero</option>
+              <option>Marzo</option>
+              <option>Abril</option>
+              <option>Mayo</option>
+              <option>Junio</option>
+              <option>Julio</option>
+              <option>Agosto</option>
+              <option>Setiembre</option>
+              <option>Octubre</option>
+              <option>Noviembre</option>
+              <option>Diciembre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Año</label>
+            <select>
+              <option>Año</option>
+              <option>2025</option>
+              <option>2026</option>
+              <option>2027</option>
+              <option>2028</option>
+              <option>2029</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>CVV</label>
+          <input type="password" placeholder="CVV" maxlength="4" />
+        </div>
+
+        <div class="form-group">
+          <label>Otras opciones de pago</label>
+          <select>
+            <option>Seleccionar método</option>
+            <option>Transferencia bancaria</option>
+            <option>PayPal</option>
+            <option>Yape / Plin</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn-volver" routerLink="/delivery">Volver a Direcciones</button>
+
+      </form>
     </div>
 
-    <div class="shipping-info">
-      <h3>Envío</h3>
-      <p>Envío estándar</p>
-      <small>Entrega estimada en 3 a 6 días hábiles. Gratis.</small>
+    <!-- Sección derecha: Resumen -->
+    <div class="payment-summary">
+      <h2>Resumen</h2>
+
+      <!-- PRODUCTOS REALES DEL CARRITO -->
+      <div class="summary-item" *ngFor="let item of carrito">
+        <img [src]="'http://localhost:3000/uploads/productos/' + item.imagen" [alt]="item.nombre" />
+        <div class="summary-details">
+          <p class="item-name">{{ item.nombre }}</p>
+          <p class="item-price">Cantidad: {{ item.cantidad }} — 
+            <span>S/.{{ item.precio * item.cantidad | number:'1.2-2' }}</span>
+          </p>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="price-breakdown">
+        <p>Subtotal: <span>S/.{{ subtotal | number:'1.2-2' }}</span></p>
+        <p>Envío: <span class="free">Gratis</span></p>
+        <p>Descuento: <span class="discount">- S/.{{ descuento | number:'1.2-2' }}</span></p>
+        <hr />
+        <p class="total">Total: <span>S/.{{ total | number:'1.2-2' }}</span></p>
+      </div>
+
+      <div class="shipping-info">
+        <h3>Envío</h3>
+        <p>Envío estándar</p>
+        <small>Entrega estimada en 3 a 6 días hábiles. Gratis.</small>
+      </div>
+
+      <button class="btn-pagar" (click)="irAConfirmacion()">
+        Pagar S/.{{ total | number:'1.2-2' }} →
+      </button>
     </div>
 
-    <button class="btn-pagar">Pagar S/.140 →</button>
-  </div>
+  </div> <!-- FIN payment-columns -->
+
 </div>
+
 <!-- Footer -->
 <app-footer></app-footer>
