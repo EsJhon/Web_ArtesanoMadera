@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build"
+    "start": "node server.js",       // 🚀 producción
+    "build": "ng build",             // Angular build
+    "heroku-postbuild": "ng build"   // si se compila automáticamente
   },
   "prettier": {
     "printWidth": 100,
