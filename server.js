@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
+import { testConnection } from './backend/db.js';
 
 // Importar rutas del backend
 import authRoutes from './backend/routes/authRoutes.js';
@@ -11,6 +12,8 @@ import productoRoutes from './backend/routes/productoRoutes.js';
 import usuarioRoutes from './backend/routes/usuarioRoutes.js';
 import ordenRoutes from './backend/routes/ordenRoutes.js';
 import reporteRoutes from './backend/routes/reporteRoutes.js';
+
+await testConnection();
 
 dotenv.config();
 const app = express();
