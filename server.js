@@ -41,14 +41,18 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(400).json({ status: 'error', message: 'Usuario no encontrado' });
 
     const user = rows[0];
-    // Solo admin
+    // Solo admin (si quieres permitir todos, comenta la línea siguiente)
     if (user.id !== 8)
       return res.status(403).json({ status: 'error', message: 'Solo admin puede ingresar' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ status: 'error', message: 'Contraseña incorrecta' });
 
-    const token = jwt.sign({ id: user.id, email: user.email, nombre: user.nombre }, process.env.JWT_SECRET, { expiresIn: '2h' });
+    const token = jwt.sign(
+      { id: user.id, email: user.email, nombre: user.nombre },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
 
     res.json({ status: 'success', token, user: { id: user.id, nombre: user.nombre, email: user.email } });
   } catch (err) {
@@ -59,16 +63,28 @@ app.post('/api/auth/login', async (req, res) => {
 
 // ================= API PRODUCTOS =================
 app.get('/api/productos', async (req, res) => {
-  const [rows] = await db.query('SELECT * FROM productos');
-  res.json(rows);
+  try {
+    const [rows] = await db.query('SELECT * FROM productos');
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Error al obtener productos' });
+  }
 });
 
 app.post('/api/productos', upload.single('imagen'), async (req, res) => {
-  const { nombre, descripcion, precio, stock, categoria, subcategoria } = req.body;
-  const imagen = req.file ? req.file.filename : '';
-  await db.query('INSERT INTO productos (nombre, descripcion, precio, stock, categoria, subcategoria, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [nombre, descripcion, precio, stock, categoria, subcategoria, imagen]);
-  res.json({ status: 'success' });
+  try {
+    const { nombre, descripcion, precio, stock, categoria, subcategoria } = req.body;
+    const imagen = req.file ? req.file.filename : '';
+    await db.query(
+      'INSERT INTO productos (nombre, descripcion, precio, stock, categoria, subcategoria, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [nombre, descripcion, precio, stock, categoria, subcategoria, imagen]
+    );
+    res.json({ status: 'success' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Error al crear producto' });
+  }
 });
 
 // ================= SERVIR ANGULAR =================
